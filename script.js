@@ -48,7 +48,6 @@ document.querySelectorAll('a[href="#"]').forEach((link) => {
 
 const copyBtn = document.getElementById("copyEmail");
 const copyLabel = document.getElementById("copyLabel");
-
 if (copyBtn && copyLabel) {
   copyBtn.addEventListener("click", async () => {
     const email = copyBtn.dataset.email;
@@ -74,24 +73,14 @@ window.addEventListener("scroll", () => {
   });
 });
 
-// Interactive hero portrait — inspired by the spatial, mouse-reactive feeling of jellys.space.
 const hero = document.querySelector(".hero");
-if (hero) {
+const portrait = document.getElementById("heroPortrait");
+if (hero && portrait) {
   const heroStyles = document.createElement("link");
   heroStyles.rel = "stylesheet";
   heroStyles.href = "hero.css";
   document.head.appendChild(heroStyles);
 
-  const stage = document.createElement("div");
-  stage.className = "hero-portrait-stage";
-  stage.innerHTML = `
-    <div class="hero-portrait-glow"></div>
-    <img class="hero-portrait" src="assets/hero-face.webp" alt="" aria-hidden="true" draggable="false">
-  `;
-  hero.prepend(stage);
-
-  const portrait = stage.querySelector(".hero-portrait");
-  const glow = stage.querySelector(".hero-portrait-glow");
   let tx = 0, ty = 0, cx = 0, cy = 0;
 
   hero.addEventListener("mousemove", (e) => {
@@ -106,17 +95,14 @@ if (hero) {
   });
 
   function animatePortrait() {
-    cx += (tx - cx) * 0.055;
-    cy += (ty - cy) * 0.055;
-
-    const moveX = cx * 28;
-    const moveY = cy * 18;
-    const rotateY = cx * 5.5;
-    const rotateX = cy * -4.5;
-
-    portrait.style.transform = `translate3d(${moveX}px, ${moveY}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-    glow.style.transform = `translate3d(${cx * -18}px, ${cy * -12}px, 0) scale(${1 + Math.abs(cx) * 0.035})`;
-
+    cx += (tx - cx) * 0.045;
+    cy += (ty - cy) * 0.045;
+    const x = cx * 34;
+    const y = cy * 22;
+    const rotateY = cx * 4.5;
+    const rotateX = cy * -3.2;
+    const floatY = Math.sin(performance.now() * 0.0012) * 7;
+    portrait.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y + floatY}px)) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     requestAnimationFrame(animatePortrait);
   }
 
